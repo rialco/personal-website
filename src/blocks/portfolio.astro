@@ -1,6 +1,4 @@
 ---
-import CardCarousel from '../components/CardCarousel.astro';
-
 const cards = [
   {
     project: 'Profesor de programación',
@@ -55,34 +53,178 @@ const cards = [
 ];
 ---
 
-<section class='portfolio' id='portfolio'>
-  <div class='portfolio-container'>
-    <h2 class='component-heading'>&lt; Portafolio /&gt;</h2>
-    <h4>Ultimos proyectos</h4>
-    <CardCarousel cards={cards} />
+<section class="portfolio reveal" id="portfolio">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">02</span>
+      <h2>Portafolio</h2>
+    </div>
+
+    <div class="list-wrapper">
+      {cards.map((card, index) => (
+        <div class="list-item border-bot reveal">
+          <div class="item-grid inverted">
+            <div class="item-visual">
+              <div class="image-mask">
+                <img src={card.imagePath} alt={card.project} loading="lazy" />
+              </div>
+            </div>
+            <div class="item-content">
+              <h3>{card.project}</h3>
+              <ul class="tech-list">
+                {card.technologies.map((tech) => (
+                  <li>{tech}</li>
+                ))}
+              </ul>
+              <div class="details">
+                {card.keypoints.map((point) => (
+                  <p>{point}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
   .portfolio {
-    width: 100%;
+    padding: 15vh 0;
+    position: relative;
+    z-index: 2;
+  }
 
-    min-height: calc(60vh - 110px);
+  .container {
+    padding: 0 4vw;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 8rem;
     display: flex;
     align-items: flex-start;
-    justify-content: center;
-
-    background-color: hsla(0, 0%, 95%);
+    gap: 2rem;
   }
 
-  .portfolio-container {
-    max-width: 1200px;
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-taupe);
+  }
+
+  .section-header h2 {
+    color: var(--color-white);
+  }
+
+  .list-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list-item {
+    padding: 4rem 0;
+    position: relative;
+    transition: background-color 0.5s var(--fluid-bezier);
+  }
+
+  .list-item:hover {
+    background-color: rgba(255,255,255,0.02);
+  }
+
+  .item-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .item-grid {
+      grid-template-columns: 4fr 6fr;
+      gap: 4rem;
+    }
+
+    .item-grid.inverted {
+      grid-template-columns: 6fr 4fr;
+    }
+  }
+
+  .item-visual {
     width: 100%;
-    padding: 20px;
   }
 
-  .portfolio-container > h2 {
-    text-align: left;
-    margin-top: 60px;
+  .item-grid.inverted .item-visual {
+    order: 3;
   }
+  
+  .item-grid.inverted .item-content {
+    order: 1;
+  }
+
+  .image-mask {
+    width: 100%;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: var(--color-charcoal);
+  }
+
+  .image-mask img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(80%);
+    transition: all 0.7s var(--fluid-bezier);
+    transform: scale(1.05);
+  }
+
+  .list-item:hover .image-mask img {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+  }
+
+  .item-content h3 {
+    margin-bottom: 1.5rem;
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+
+  .tech-list li {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--color-blue);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+  }
+
+  .details {
+    color: var(--color-indigo-light);
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  .details p {
+    margin-bottom: 0.5rem;
+  }
+
+  .details p::before {
+    content: "—";
+    margin-right: 0.5rem;
+    color: var(--color-taupe);
+  }
+
 </style>

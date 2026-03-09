@@ -2,116 +2,132 @@
 import { Icon } from 'astro-icon/components';
 ---
 
-<header>
-  <div class='upper-header'>
-    <h5 class='github'>
-      <Icon name='github' />
-      <a target='_blank' href='https://github.com/rialco'>Github profile</a>
-    </h5>
-  </div>
-  <div class='navbar'>
-    <div class='navbar-container'>
-      <div class='navbar-left'>
-        <a href='/'>rialdev</a>
-      </div>
-      <div class='navbar-right'>
-        <nav>
-          <a href='/#about'>Sobre mi</a>
-          <a href='/#experience'>Experiencia</a>
-          <a href='/#portfolio'>Portafolio</a>
-          <a href='/blog'>Blog</a>
-        </nav>
-      </div>
-    </div>
+<header class="fixed-nav">
+  <div class="nav-container">
+    <a href="/" class="brand">Ricardo Correa</a>
+    <nav class="links">
+      <a href="/#about">About</a>
+      <a href="/#experience">Experience</a>
+      <a href="/#portfolio">Work</a>
+      <a href="/blog">Editorial</a>
+      <a target="_blank" href="https://github.com/rialco" class="github-link">
+        <Icon name="github" />
+        GH
+      </a>
+    </nav>
   </div>
 </header>
 
+<script>
+  const header = document.querySelector('.fixed-nav');
+  const handleScroll = () => {
+    if (header) {
+      // Turn solid white after scrolling past most of the first section
+      if (window.scrollY > window.innerHeight * 0.8) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    }
+  };
+  
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  // Call once on load in case the page is refreshed half-way down
+  handleScroll();
+</script>
+
 <style>
-  .upper-header {
-    background-color: hsl(211, 34%, 23%);
-    height: 40px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
+  .fixed-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1rem 1.5rem; /* Reduced padding for mobile */
+    transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .github {
-    width: 1200px;
-    text-align: right;
-    font-size: 0.9em;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  .github > svg {
-    margin-right: 4px;
-    font-size: 1.4em;
+  .fixed-nav.is-scrolled {
+    background-color: var(--color-white);
+    padding: 0.8rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
-  .github > a {
-    color: hsl(0, 0%, 100%);
-    text-decoration: none;
-  }
-
-  .navbar {
-    height: 70px;
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-bottom: 1px solid hsla(0, 0%, 90%, 0.5);
-    padding: 10px;
-  }
-  .navbar-container {
-    width: 1200px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .navbar-left {
-    width: 50%;
-  }
-
-  .navbar-left > a {
-    font-family: 'Inconsolata', monospace;
-    font-weight: 700;
-
-    margin-bottom: 0;
-    text-decoration: none;
-    font-size: 1.4em;
-    color: hsl(0, 0%, 0%);
-  }
-
-  .navbar-right {
-    width: 50%;
-  }
-
-  nav {
-    width: 100%;
-    display: none;
-  }
-
-  nav > a {
-    font-family: 'Inconsolata', monospace;
-    font-weight: 600;
-    font-size: 0.92em;
-
-    margin-left: 20px;
-    text-decoration: none;
-    color: hsl(0, 0%, 10%);
-  }
-
+  /* Make padding larger on desktop */
   @media (min-width: 768px) {
-    nav {
-      display: flex;
-      justify-content: end;
+    .fixed-nav {
+      padding: 1.5rem 4vw;
+    }
+    .fixed-nav.is-scrolled {
+      padding: 1rem 4vw;
+    }
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%; /* Ensure it does not overflow */
+  }
+
+  .brand {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-white);
+    transition: color 0.3s ease;
+    white-space: nowrap; /* Prevent breaking on small screens */
+  }
+
+  .fixed-nav.is-scrolled .brand {
+    color: var(--color-navy);
+  }
+
+  .links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .links a {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-white);
+    opacity: 0.8;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+
+  .fixed-nav.is-scrolled .links a {
+    color: var(--color-navy);
+  }
+
+  .links a:hover {
+    opacity: 1;
+  }
+
+  .github-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .github-link [data-icon] {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 768px) {
+    .links a:not(.github-link) {
+      display: none; /* Hide standard links on mobile to prevent overflow */
+    }
+    .brand {
+      font-size: 1.5rem; /* Smaller brand on mobile to prevent overflow */
     }
   }
 </style>
